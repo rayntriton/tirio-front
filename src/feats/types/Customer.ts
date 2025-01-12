@@ -1,0 +1,24 @@
+export interface Customer{
+  id:number
+	code:string
+	consummer:string
+	consummerType:number
+	discountPercentage:number
+	address:string
+	interiorNumber:string
+	exteriorNumber:string
+	suburb:string
+	locality:string
+	city:string
+	country:string
+	state:string
+	email:string
+	cp:string
+	rfc:string
+	tel:string
+	payment:number
+	reference:string
+	aditionalReference:string
+	cfdiUse:string
+	fiscalRegime:string
+}

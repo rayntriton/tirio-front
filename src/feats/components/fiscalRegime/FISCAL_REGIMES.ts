@@ -1,0 +1,21 @@
+export const FISCAL_REGIMES = [
+  { code:'601',  description: 'GENERAL DE LEY PERSONAS MORALES', contributorType1Allowed:false, contributorType2Allowed:true },
+  { code:'603',  description: 'PERSONAS MORALES CON FINES NO LUCRATIVOS', contributorType1Allowed:false, contributorType2Allowed:true },
+  { code:'605',  description: 'SUELDOS Y SALARIOS E INGRESOS ASIMILADOS A SALARIOS', contributorType1Allowed:true, contributorType2Allowed:false },
+  { code:'606',  description: 'ARRENDAMIENTO', contributorType1Allowed:true, contributorType2Allowed:false },
+  { code:'607',  description: 'RÉGIMEN DE ENAJENACIÓN O ADQUISICIÓN DE BIENES', contributorType1Allowed:true, contributorType2Allowed:false },
+  { code:'608',  description: 'DEMÁS INGRESOS', contributorType1Allowed:true, contributorType2Allowed:false },
+  { code:'610',  description: 'RESIDENTES EN EL EXTRANJERO SIN ESTABLECIMIENTO PERMANENTE EN MÉXICO', contributorType1Allowed:true, contributorType2Allowed:true },
+  { code:'611',  description: 'INGRESOS POR DIVIDENDOS (SOCIOS Y ACCIONISTAS)', contributorType1Allowed:true, contributorType2Allowed:false },
+  { code:'612',  description: 'PERSONAS FÍSICAS CON ACTIVIDADES EMPRESARIALES Y PROFESIONALES', contributorType1Allowed:true, contributorType2Allowed:false },
+  { code:'614',  description: 'INGRESOS POR INTERESES', contributorType1Allowed:true, contributorType2Allowed:false },
+  { code:'615',  description: 'RÉGIMEN DE LOS INGRESOS POR OBTENCIÓN DE PREMIOS', contributorType1Allowed:true, contributorType2Allowed:false },
+  { code:'616',  description: 'SIN OBLIGACIONES FISCALES', contributorType1Allowed:true, contributorType2Allowed:false },
+  { code:'620',  description: 'SOCIEDADES COOPERATIVAS DE PRODUCCIÓN QUE OPTAN POR DIFERIR SUS INGRESOS', contributorType1Allowed:false, contributorType2Allowed:true },
+  { code:'621',  description: 'INCORPORACIÓN FISCAL', contributorType1Allowed:true, contributorType2Allowed:false },
+  { code:'622',  description: 'ACTIVIDADES AGRÍCOLAS, GANADERAS, SILVÍCOLAS Y PESQUERAS', contributorType1Allowed:false, contributorType2Allowed:true },
+  { code:'623',  description: 'OPCIONAL PARA GRUPOS DE SOCIEDADES', contributorType1Allowed:false, contributorType2Allowed:true },
+  { code:'624',  description: 'COORDINADOS', contributorType1Allowed:false, contributorType2Allowed:true },
+  { code:'625',  description: 'RÉGIMEN DE LAS ACTIVIDADES EMPRESARIALES CON INGRESOS A TRAVÉS DE PLATAFORMAS TECNOLÓGICAS', contributorType1Allowed:true, contributorType2Allowed:false },
+  { code:'626',  description: 'RÉGIMEN SIMPLIFICADO DE CONFIANZA', contributorType1Allowed:true, contributorType2Allowed:true }
+]

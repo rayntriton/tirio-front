@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",                                  /* Specify the root folder within your source files. */
+    "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
+    "paths": {
+      "#root/*": [ "src/*" ],
+      "#types/*": [ "src/utils/types/*" ],
+      "#utils/*": [ "src/utils/*" ],
+      "#feats/*": [ "src/feats/*" ]
+    },
+    "types": [ "node" ],
+    "typeRoots": ["./node_modules/@types"]
+  }
+}
