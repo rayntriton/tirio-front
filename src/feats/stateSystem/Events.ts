@@ -1,5 +1,5 @@
-import { PRODUCTION_ENV } from "@/feats/settings"
-import { Accessor, EventFunction, GET, SET, Setter, TransformToEventFunction } from "./types"
+import { SETTINGS } from "@/feats/settings"
+import { Accessor, EventFunction, GET, Registry, SET, Setter, TransformToEventFunction } from "./types"
 import { usePersistentStorage } from "@/feats/sessionStore"
 import { traceHash } from "@/utils/string"
 import { createFakeEvent, executeFakeEvent, getParentEventId } from "./utils"
@@ -36,6 +36,7 @@ export class Events< FUNCTION = Setter< any >|Accessor< any >|( ( ...args:any[] 
       task = this.registry.get( name )
     else throw new Error( "Task not registered yet" + name )
     const taskUnit = new TaskUnit( name, task!, taskId, parentTaskUnitId, ...args )
+    console.log( 'Events: queue: taskUnit', taskUnit )
     taskUnit.fingerPrint = fingerPrint
     this.allUnits.set( taskId, taskUnit )
     const parentTaskUnit = this.allUnits.get( parentTaskUnitId )
@@ -152,8 +153,8 @@ export class Events< FUNCTION = Setter< any >|Accessor< any >|( ( ...args:any[] 
 
 const events = new Events()
 
-export function queueEvent( event:string, ...args:any[] ){
-  return events.queue( event, ...args )
+export function queueEvent( registry:string, ...args:any[] ){
+  return events.queue( registry, ...args )
 }
 
 export function getValue( valueName:string ){
@@ -191,15 +192,37 @@ function create<
       if( functionsType[ index ] == 'fun' || functionsType[ index ] == 'set' )
         acc[ key ] = ( ( ...args:any[] ) => {
           const result = queueEvent( eventsId[ index ], ...args )
-          result.then( response => 
-              console.log( `Events-----------------------------${ response }------------------------------` )
-            )
           return  result
         } )
       else
         acc[ key ] = ( () => getValue( eventsId[ index ] ) )
       return acc;
     }, {} as any )
+}
+
+function createRegistry( value:any, persistent:'sessionStorage'|'localStorage'|'memoryStorage' = 'memoryStorage' ){
+  let eventName = `${ traceHash() }`
+  if( value instanceof Function ){
+    return events.register( value, eventName )
+  }
+  else{
+    const [ getter, setter ] = usePersistentStorage< any >( value, 0, persistent )
+    const getter_ = events.register( getter as GET< any >, `0-${ eventName }` )
+    const setter_ = events.register( setter as SET< any >, `1-${ eventName }` )
+    return [ getter_, setter_ ]
+  }
+}
+
+export function registerMemory< Value >( value:Value ):Registry< Value >{
+  return createRegistry( value ) as Registry< Value >
+}
+
+export function registerSession< Value >( value:Value ):Registry< Value >{
+  return createRegistry( value, 'sessionStorage' ) as Registry< Value >
+}
+
+export function registerLocal< Value >( value:Value ):Registry< Value >{
+  return createRegistry( value, 'localStorage' ) as Registry< Value >
 }
 
 '@deprecated'
@@ -267,6 +290,11 @@ export function createLocal<
     return createSignals( 'localStorage', ...args ) as TransformToEventFunction< Args >
 }
 
+export function useEvent< V >( value:V ){
+    const memory = createMemory( [ 'fun', [ value ] ] as const )
+    return memory.fun
+}
+
 export function useMemory< V >( value:V ){
   const memory = createMemory( [ 'get', 'set', [ value ] ] as const )
   return [ memory.get, memory.set  ] as [ Accessor< V >, Setter< V >]
@@ -286,5 +314,5 @@ export function setMaxTasksPerSecond( value:number ){
   Events.MAX_TASKS_PER_SECOND = value
 }
 
-if( ! PRODUCTION_ENV )
+if( ! SETTINGS.PRODUCTION_ENV )
   ( window as any as { queueSystem:Events } ).queueSystem = events

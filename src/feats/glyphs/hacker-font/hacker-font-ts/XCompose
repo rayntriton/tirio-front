@@ -1,0 +1,15 @@
+include "%L"
+<Multi_key> <f> <f>              	        : "ʗ"    # U+0297 FUNCTION OPEN
+<Multi_key> <equal> <equal>               : "ᗔ"    # U+15D4 FUNCTION CLOSE
+<Multi_key> <r> <r>              	        : "·"    # U+00B7 REQUIRED || REST
+<Multi_key> <o> <o>              	        : "ᐤ"    # U+1424 OPTIONAL
+<Multi_key> <backslash> <backslash>       : "ǀ"    # U+01C0 OR
+<Multi_key> <l> <l>                     	: "𝞴"    # LAMDA
+<Multi_key> <d> <d>              	        : "Δ"    # DELTA
+<Multi_key> <bracketleft> <bracketleft>   : "ᑕ"    # U+1455 BRACKET OPEN
+<Multi_key> <bracketright> <bracketright> : "ᑐ"    # U+1450 BRACKET CLOSE
+<Multi_key> <braceleft> <braceleft>       : "ᓬ"    # U+14ec BRACE OPEN
+<Multi_key> <braceright> <braceright>     : "ᕒ"    # U+1552 BRACE CLOSE
+<Multi_key> <colon> <colon>           	  : "Ξ"    # U+039e COLON
+<Multi_key> <less> <less>        	        : "ᐸ"    # U+1433 LESS
+<Multi_key> <greater> <greater>        	  : "ᐳ"    # U+1438 GREATER

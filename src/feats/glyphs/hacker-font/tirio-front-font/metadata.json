@@ -1,0 +1,62 @@
+{
+  "props" : {
+    "family" : "TirioFrontFont"
+  },
+  "output" : [
+    "TirioFrontFont.ttf"
+  ],
+  "glyphs" : {
+    "0x0061" : {
+      "char" : "a",
+      "src" : "svg/eye-white.svg"
+    },
+    "0x0062" : {
+      "char" : "b",
+      "src" : "svg/eye-closed-white.svg"
+    },
+    "0x0063" : {
+      "char" : "c",
+      "src" : "svg/home-white.svg"
+    },
+    "0x0064" : {
+      "char" : "d",
+      "src" : "svg/menu-white.svg"
+    },
+    "0x0065" : {
+      "char" : "e",
+      "src" : "svg/avatar-white.svg"
+    },
+    "0x0066" : {
+      "char" : "f",
+      "src" : "svg/yellow-flag.svg"
+    },
+    "0x0067" : {
+      "char" : "g",
+      "src" : "svg/red-flag.svg"
+    },
+    "0x0068" : {
+      "char" : "h",
+      "src" : "svg/purple-flag.svg"
+    },
+    "0x0069" : {
+      "char" : "i",
+      "src" : "svg/envelope-plus.svg"
+    },
+    "0x006A" : {
+      "char" : "j",
+      "src" : "svg/trash.svg"
+    },
+    "0x006B" : {
+      "char" : "k",
+      "src" : "svg/sight-disabled.svg"
+    },
+    "0x006C" : {
+      "char" : "l",
+      "src" : "svg/edit.svg"
+    },
+    "0x006D" : {
+      "char" : "m",
+      "src" : "svg/plus.svg"
+    }
+   }
+}

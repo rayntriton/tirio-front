@@ -18,12 +18,12 @@ export function usePersistentStorage< TYPE >(
     const recover = storage.getItem( key )
     if( recover != null ){
       setSignal( JSON.parse( recover ) )
-      console.log( "usePersistSession: recover", JSON.parse( recover ), "key", key )
+      console.log( "usePersistentSession: recover", JSON.parse( recover ), "key", key )
     }
     else{
       setSignal( value )
       storage.setItem( key, JSON.stringify( getSignal() ) )
-      console.log( "usePersistSession: not recover. value ", value, "key", key )
+      console.log( "usePersistentSession: not recover. value ", value, "key", key )
     }
   }
   //sessionStorage.setItem( key, JSON.stringify( value ) )

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+fontforge -script $(realpath ../bin/svgs2ttf/svgs2ttf) $PWD/metadata.json

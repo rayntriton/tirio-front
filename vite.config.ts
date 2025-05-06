@@ -5,13 +5,13 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import * as path from 'path'
 import * as fs from "fs"
 import basicSsl from '@vitejs/plugin-basic-ssl'
-
-
+import eslintPlugin from "@nabla/vite-plugin-eslint"
 
 export default defineConfig({
   plugins: [
     deepIndex( '/src/index.html' ),
     solid(),
+    eslintPlugin(),
     tsconfigPaths(),
     basicSsl( {
       /** name of certification */
@@ -42,7 +42,16 @@ function deepIndex( path ){
     configureServer( server ) {
       server.middlewares.use(
         ( req, res, next ) => {
-          if ( req.url === '/' || req.url === '/login' ) {
+          if (
+            req.url === '/'
+            || req.url === '/login'
+            || req.url === '/lock'
+            || req.url === '/styling'
+            || req.url === '/menu'
+            || ( req.url as string ).startsWith( '/products/' )
+            || ( req.url as string ).startsWith( '/customers/' )
+            || ( req.url as string ).startsWith( '/users/' )
+            || ( req.url as string ).startsWith( '/docs/' ) ) {
             req.url = path;
           }
           next();

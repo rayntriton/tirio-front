@@ -1,6 +1,18 @@
-import { BACKEND_ENTRY } from "@/feats/settings";
+import { SETTINGS } from "@/feats/settings";
 import { fetcher } from "./fetcher"
+import { getAuthState } from "@/feats/authentication";
+import { getGlobalState } from "@/feats/globalState";
 
 export async function post( body:any ){
-  return fetcher( BACKEND_ENTRY, 'POST', body );
+  const clientReference = getAuthState().clientReference()
+  const token = getAuthState().token()
+  return getGlobalState().setRequestNumber( requestNumber => requestNumber + 1 )
+    .then( requestNumber => {
+      return fetcher( SETTINGS.BACKEND_ENTRY, 'POST', {
+        ...body,
+        clientReference,
+        token,
+        requestNumber
+      } )
+    } )
 }

@@ -1,12 +1,22 @@
-import { post, preflight } from "@/feats/fetch";
+import { backend, post, preflight } from "@/feats/fetch";
 import { OnlineClient, CommandResponse } from "@/feats/types";
 import { DecoupledPromise } from "@/utils/core";
 
 export function serverLogin( user:string, password:string ){
-  const { promise, fine, fail } = new DecoupledPromise< CommandResponse< OnlineClient, string >, string >();
+  const { promise, fine, fail } = new DecoupledPromise< { onlineClient:OnlineClient }, string >();
   preflight()
-    .then( response => {
-      if( response.ok ){
+    .then( preflightResponse => {
+      if( preflightResponse.ok ){
+        backend< { onlineClient:OnlineClient } >( { command: "login", user, password } )
+          .then( response  => {
+            console.log( "serverLogin: response", response )
+            fine( response )
+          } )
+          .catch( error => {
+            fail( error )
+          } )
+
+        /*
         console.log( "AuthPage.handleSubmit: preflight response ok" )
         return post( { command: "login", user, password } )
           .then( httpResponse => {
@@ -30,7 +40,7 @@ export function serverLogin( user:string, password:string ){
           } )
           .catch( error =>{
             fail( "Error when fetching server: " + error )
-          } )
+          } )*/
       }
     } )
     .catch( error =>{

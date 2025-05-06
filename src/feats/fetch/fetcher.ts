@@ -9,8 +9,8 @@ export const fetcher = async function( url:string, method:Method, body?:any ){
     },
     body: body ? jsonToFormUrlEncoded( body ) : undefined,
     //credentials: 'include'
-  });
-    return rawResponse;
+  } )
+  return rawResponse;
 }
 
 export const preflightFetcher = async function( url:string, method:Method, body?:any ){

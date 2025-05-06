@@ -4,12 +4,13 @@ import { DOMElement } from "solid-js/jsx-runtime"
 
 export class CommandLine {
   value = ''
+  rawValue = ''
   command?:string
   kind?:string
   args?:string[]
   pargs?:string[]
   argssize?:number
-  getFromDB = false
+  allowFetching = false
   quantity?:number
   printCopies?:number
   globalData?:{ periodicity: string, months: string, year: string }
@@ -26,59 +27,86 @@ export class CommandLine {
   isDynamicCatalogMode = false
   event:any
 
-  constructor( input: any ) {
+  constructor( input: any, currentValue:string ) {
     this.event = input
-    const key = input.key
-    const oldValue = input.explicitOriginalTarget.value
-    const newValue = key == 'Backspace'
-      ? oldValue.substring( 0, oldValue.length - 2 )
-      : oldValue + ( input.key.length > 1 ? "" : input.key )
+    const oldValue = currentValue.trim()//
+    this.rawValue = input.explicitOriginalTarget.value
+    let newValue = this.rawValue.trim()
     this.value = newValue
+    console.log( 'CommandLine: oldValue', oldValue, 'newValue', newValue )
+    if( oldValue != newValue ) this.allowFetching = true
     // let splited = this.value.split(" ")
     // this.command = splited[ 0 ]
     this.args = []
     this.pargs = []
     this.argssize = 0
-    this.getFromDB = false
     if (this.value == "") {
+      this.allowFetching = false
       return
     }
-    this.command = this.value.trim().split( /\s+/ )[ 0 ]
-    this.args = this.value.trim().split( /\s+/ ).splice( 1 )
+    this.command = this.value.split( /\s+/ )[ 0 ]
+    this.args = this.value.split( /\s+/ ).splice( 1 )
     this.argssize = this.args.length
 
     if ( isNumber( this.command )) {
       this.kind = "product"
       this.quantity = Number.parseFloat( this.command )
       if (this.argssize > 0) {
-        this.getFromDB = true
+        if( oldValue != newValue ) this.allowFetching = true
+        else this.allowFetching = false
         this.kind = "product"
         this.isDynamicCatalogMode = true
       }
       else {
+        this.allowFetching = false
         this.kind = "undefined"
       }
     }
     else if ( this.command == "c" ) {
       if ( this.argssize > 0 ){
+        if( oldValue != newValue ) this.allowFetching = true
+        else this.allowFetching = false
         this.kind = "client"
-        this.getFromDB = true
         this.isDynamicCatalogMode = true
       }
       else this.kind = 'undefined'
     }
+    else if ( this.command == "c" ) {
+      if ( this.argssize > 0 ){
+        if( oldValue != newValue ) this.allowFetching = true
+        else this.allowFetching = false
+        this.kind = "client"
+        this.isDynamicCatalogMode = true
+      }
+      else this.kind = 'undefined'
+    }
+    else if ( this.command == "%u" ) {
+      if ( this.argssize > 0 ){
+        if( oldValue != newValue ) this.allowFetching = true
+        else this.allowFetching = false
+        this.kind = "searchusers"
+        this.isDynamicCatalogMode = true
+      }
+      else this.kind = 'undefined'
+    }
+    else if ( this.command == "%adduser" ) {
+      this.kind = 'adduser'
+    }
     else if (this.command == "a") {
       this.kind = "agent"
-      this.getFromDB = true
       this.isDynamicCatalogMode = true
     }
     else if (this.command == "ha") {
       this.kind = "agentstatus"
-      this.getFromDB = true
     }
     else if (this.command == "hc") {
       this.kind = "clientstatus"
-      this.getFromDB = true
+    }
+    else if ( this.command == "%doc" ) {
+      if ( this.argssize == 1 ){
+        this.kind = "operatedocument"
+      }
+      else this.kind = 'undefined'
     }
     else if (this.command == "$facturarinseguramente") {
       if ( this.args[ 0 ] ) {
@@ -101,6 +129,19 @@ export class CommandLine {
       }
       else this.kind = "undefinedcommand"
     }
+    else if (this.command == "@d") {
+      if( this.args.length == 0 || ! isNumber( this.args[ 0 ] ) )
+        this.kind = "undefinedcommand"
+      else this.kind = "discount"
+    }
+    else if (this.command == "@ad") {
+      if( this.args.length == 0 || ! isNumber( this.args[ 0 ] ) )
+        this.kind = "undefinedcommand"
+      else this.kind = "absolutediscount"
+    }
+    else if (this.command == "@p") {
+      this.kind = "appendproduct"
+    }
     else {
       if (
         this.command.indexOf("@") == 0 ||
@@ -111,11 +152,12 @@ export class CommandLine {
         return
       }
       console.log("matches!")
+      if( oldValue != newValue ) this.allowFetching = true
+      else this.allowFetching = false
       this.quantity = 1
       this.kind = "retrieve"
       this.args = this.value.trim().split( /\s+/ )
       this.argssize = this.args.length
-      this.getFromDB = true
       this.isDynamicCatalogMode = true
     }
     /*

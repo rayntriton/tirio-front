@@ -1,0 +1,7 @@
+export * from './cdfiUse'
+export * from './customer'
+export * from './fiscalRegime'
+export * from './paymentMethod'
+export * from './paymentWay'
+export * from './user'
+export * from './document'

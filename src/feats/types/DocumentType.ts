@@ -1,0 +1,7 @@
+export enum DOCUMENT_TYPE {
+	SAMPLE,
+	ORDER,
+	INVOICE,
+	CREDIT,
+	RAINCHECK
+}

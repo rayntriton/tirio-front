@@ -10,5 +10,7 @@ export function mobileAndTabletCheck() {
             .test( metadata.substring( 0, 4 ) ) )
           return true
     } )( navigator.userAgent || navigator.vendor || window_.opera )
+      ? true
+      : false
   return check
 }

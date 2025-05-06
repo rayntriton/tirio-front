@@ -3,11 +3,13 @@ import { HistoryFrom, OnlineClient } from "@/feats/types";
 import { onMount } from "solid-js";
 import { serverLogin } from "./serverLogin";
 import { useAuth } from "./AuthProvider";
-import { createMemory, createMemorySignals, createSession, createSignals } from "@/feats/stateSystem";
+import { createMemory, createMemorySignals, createSession, createSignals, useEvent } from "@/feats/stateSystem";
 import { useTheme } from "@/feats/styles";
+import { useGlobal } from "@/feats/globalState";
 
 export function AuthPage(){
 
+  const global = useGlobal()
   const auth = useAuth()
 
   const theme = useTheme()
@@ -27,13 +29,14 @@ export function AuthPage(){
   const password  = createSignals( "memoryStorage" , "asd", [ () => {} ] )
   //const [ error, setError ] = createSignal( "" ); // Para manejar errores
 
-  const navigateBack = createMemorySignals( [ 'now' ], () => {
+  const navigateBack = useEvent( () => {
     let from = '/'
     if( location.state )
      from = ( location.state as HistoryFrom ).from
+    if( from == '/lock' || from == '/login' ) from = '/'
     console.log( "AuthPage.handleSubmit: navigating to " + from )
-    navigate( from )
-  } );
+    navigate( from, { replace: true } )
+  } )
   
   const tryLogin = createMemorySignals( [ 'now' ], () => {
     try {
@@ -41,20 +44,14 @@ export function AuthPage(){
       console.log( "AuthPage.handleSubmit: serverLogin" )
       serverLogin( local.user(), local.password() )
         .then( commandResponse => {
-          if( commandResponse.success ){
-            const onlineClient:OnlineClient = commandResponse.content
-            auth.setSessionId( onlineClient.sessionId )
-            auth.setClientReference( onlineClient.clientReference )
-            auth.setToken( onlineClient.token )
-            auth.setUser( onlineClient.shopman )
-            auth.unlock()
-            auth.login()
-            navigateBack.now()
-          }
-          else {
-            console.log( "AuthPage.handleSubmit: serverLogin error " + commandResponse.error )
-            local.setError( commandResponse.error )
-          }
+          const onlineClient:OnlineClient = commandResponse.onlineClient
+          auth.setSessionId( onlineClient.sessionId )
+          auth.setClientReference( onlineClient.clientReference )
+          auth.setToken( onlineClient.token )
+          auth.setUser( onlineClient.shopman )
+          auth.unlock()
+          auth.login()
+          navigateBack()
         } )
         .catch( error => {
           console.log( "AuthPage.handleSubmit: serverLogin error " + error )
@@ -73,7 +70,9 @@ export function AuthPage(){
   onMount( () => {
     document.getElementById( "user" )?.focus()
   } )
+
   console.log( "AuthPage: isauthenticated", auth.isAuthenticated() )
+  console.log( "AuthPage: isPortableDevice", global.isPortableDevice() )
 
   const handleSubmit = async ( event:SubmitEvent ) => {
     event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
@@ -81,13 +80,14 @@ export function AuthPage(){
   }
   
   return (
-    <div  >
-      <form onSubmit = { handleSubmit } class = 'flex-row' >
+    <div  class = 'w-full flex items-center justify-center content-center' >
+      <form onSubmit = { handleSubmit } class = { '' }  >
         {/* Campo de usuario */}
-        <div>
-          <label for = "user" ><p class = { theme.paragraph() } >Usuario:</p></label>
+        <div class = 'flex flex-col items-center'>
+          <p>Login</p>
+          <label for = "user" ><p class = { theme.paragraph( 'text-center w-full' ) } >Usuario:</p></label>
           <input
-            class = { theme.input() }
+            class = { theme.input( 'w-full' ) }
             type = "text"
             id = "user"
             value = { local.user() }
@@ -97,10 +97,10 @@ export function AuthPage(){
         </div>
 
         {/* Campo de contraseña */}
-        <div>
-          <label for = "password" ><p class = { theme.paragraph() } >Contraseña:</p></label>
+        <div class = 'flex flex-col items-center'>
+          <label for = "password" ><p class = { theme.paragraph( 'text-center w-full' ) } >Contraseña:</p></label>
           <input
-            class = { theme.input() }
+            class = { theme.input( 'w-full' ) }
             type = "password"
             id = "password"
             value = { local.password() }
@@ -113,12 +113,14 @@ export function AuthPage(){
         { local.error() && <p style = { { color: "red" } } >{ local.error() }</p> }
 
         {/* Botón de envío */}
-        <button
-            type = 'submit'
-            class = {
-              theme.button( 'flex-1 content-center justify-center' ) } >
-          Iniciar sesión
-        </button>
+        <div class = 'flex flex-col items-center'>
+          <button
+              type = 'submit'
+              class = {
+                theme.button( 'w-full' ) } >
+            Iniciar sesión
+          </button>
+        </div>
       </form>
     </div>
   )

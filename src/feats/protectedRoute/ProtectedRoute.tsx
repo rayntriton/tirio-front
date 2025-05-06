@@ -9,9 +9,8 @@ export const ProtectedRoute:Component< ChildrenProps > = ( props ) => {
   const auth = useAuth()
 
   console.log( "ProtectedRoute: isauthenticated", auth.isAuthenticated() )
-  //return auth.isAuthenticated()
-  //  ? props.children
-  //  : <Navigate href = "/login" state = { { from: location.pathname } } />
+  
+
   return (
     <div>
       <Show

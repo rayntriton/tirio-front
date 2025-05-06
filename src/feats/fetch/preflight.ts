@@ -1,6 +1,6 @@
-import { fetcher, preflightFetcher } from "./fetcher";
-import { BACKEND_ENTRY } from "@/feats/settings";
+import { preflightFetcher } from "./fetcher";
+import { SETTINGS } from "@/feats/settings";
 
 export async function preflight(){
-  return preflightFetcher( BACKEND_ENTRY,'OPTIONS' )
+  return preflightFetcher( SETTINGS.BACKEND_ENTRY,'OPTIONS' )
 }

@@ -11,10 +11,10 @@ function isCustomNumber( value:any ){
 }
 
 export function isNumber( value:any ){
-  return isCustomNumber( value )
+  return ! isNaN( parseFloat( value ) ) && isFinite( value )
 }
 
-export function parseFloat( value:any ){
-  if( isNumber( value ) ) return Number.parseFloat( value )
-  else return NaN
+/*deprecated*/
+export function isNumber_( value:any ){
+  return isCustomNumber( value )
 }

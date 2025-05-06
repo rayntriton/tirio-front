@@ -45,6 +45,41 @@ export type Setter<in out T> = {
 };
 
 // Tipo para crear el objeto resultante
+export type EventFunction_V1<
+    Keys extends string[],
+    Args extends any[],
+    Acc extends Record<string, any> = {},
+    LastType = null,
+    LastArg = null,
+  > =
+    Keys extends []
+      ? Acc
+      : Keys extends [ infer First extends string, ...infer Rest extends string[] ]
+        ? Args extends [ infer FirstArg, ... infer RestArgs ]
+          ? EventFunction<
+              Rest extends string[] ? Rest : [],
+              IsExactFunction<LastType, Accessor< LastArg > > extends true ? Args : RestArgs,
+              Acc & { [K in First]: IsExactFunction<LastType, Accessor< LastArg > > extends true
+                ? Setter< LastArg >
+                : FirstArg extends ( ...args:any[] ) => any
+                  ? ( ...args:Parameters< FirstArg > ) => Promise<ReturnType< FirstArg > > 
+                  : Accessor< FirstArg > },
+              IsExactFunction<LastType, Accessor< LastArg > > extends true
+                ? Setter< FirstArg >
+                : FirstArg extends ( ...args:any[] ) => any
+                  ? ( ...args:Parameters< FirstArg > ) => Promise<ReturnType< FirstArg > >
+                  : Accessor< FirstArg >,
+              FirstArg
+            >
+          : EventFunction<
+              Rest extends string[] ? Rest : never,
+              [],
+              Acc & { [K in First]: IsExactFunction<LastType, Accessor< LastArg > > extends true
+                ? Setter< LastArg >
+                : never }
+            >
+        : Acc
+//
 export type EventFunction<
     Keys extends string[],
     Args extends any[],
@@ -79,7 +114,7 @@ export type EventFunction<
                 : never }
             >
         : Acc
-// 
+
 export type TransformToEventFunction<
   Args extends [ ...any ],
   Keys extends string[] = ExtractOfType< Args, string >,
@@ -218,3 +253,15 @@ function createObject<
     //:EventFunction< ExtractOtfType< Args, string >, Flatten< ExtractOtfType< Args, any[] > > >{
   return {} as TransformToEventFunction< Args >
 }
+
+export type Registry< Value extends any> =
+  Value extends Function
+    ? string
+    : [ string, string ]
+
+function registry< Value >( value:Value ):Registry< Value >{
+  if( value instanceof Function ) return "" as Registry< Value >
+  else return [ "", "" ] as Registry< Value >
+}
+
+const ref = registry( () => {} )

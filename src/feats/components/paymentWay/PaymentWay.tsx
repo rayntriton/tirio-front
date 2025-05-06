@@ -1,6 +1,20 @@
-export function PaymentWay(){
+import { Setter, useEvent } from "@/feats/stateSystem"
+import { onMount } from "solid-js"
+
+export function PaymentWay(props:{ setPaymentWay:Setter< string >, style:string } ){
+  const updatePaymentWay = useEvent( ( event:Event ) => {
+    props.setPaymentWay( ( event as any ).value )
+  } )
+  onMount( ( ) => {
+    props.setPaymentWay( 'PUE' )
+    document.getElementById( 'paymentWay' )?.setAttribute( 'value', '01' )
+  } )
   return (
-    <select id="paymentWay" style="width: 10%" aria-placeholder="Forma de Pago">
+    <select
+        id="paymentWay"
+        class = { "w-full " + props.style }
+        onchange = { updatePaymentWay }
+        aria-placeholder="Forma de Pago">
       <option disabled selected>Forma de Pago</option>
       <option value="01">01 Efectivo</option>
       <option value="02">02 Cheque nominativo</option>

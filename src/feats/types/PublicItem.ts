@@ -4,6 +4,7 @@ export interface PublicItem{
   code:string
   mark:string
   unitPrice:number
+  unitPriceComputed:number
   unit:string
   description:string
 	disabled:boolean
@@ -11,4 +12,6 @@ export interface PublicItem{
 	raincheck:boolean
 	prodservCode:string
 	unitCode:string
+  providerPrice:number
+  incrementPercent:number
 }

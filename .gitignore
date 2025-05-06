@@ -27,3 +27,5 @@ ssl
 notebook
 .ipynb_checkpoints
 public
+
+.eslintrc.js

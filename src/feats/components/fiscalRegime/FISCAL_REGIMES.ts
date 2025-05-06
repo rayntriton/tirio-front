@@ -19,3 +19,4 @@ export const FISCAL_REGIMES = [
   { code:'625',  description: 'RÉGIMEN DE LAS ACTIVIDADES EMPRESARIALES CON INGRESOS A TRAVÉS DE PLATAFORMAS TECNOLÓGICAS', contributorType1Allowed:true, contributorType2Allowed:false },
   { code:'626',  description: 'RÉGIMEN SIMPLIFICADO DE CONFIANZA', contributorType1Allowed:true, contributorType2Allowed:true }
 ]
+

@@ -9,3 +9,26 @@
 @supports (font-variation-settings: normal) {
   :root { font-family: InterVariable, sans-serif; }
 }
+
+@font-face {
+  font-family: "TirioFrontFont";
+  src: url( "/src/feats/glyphs/hacker-font/tirio-front-font/TirioFrontFont.ttf" ) format( "truetype-variations" );
+  /* variable fonts support this: two values specifies a range */
+  font-weight: 300 700;
+  font-style: normal;
+}
+
+.glyph{
+  font-family: TirioFrontFont;
+}
+
+.glyph-shadow-black{
+  text-shadow: 0px 0px 5px black;
+}
+
+.table-as-form td:first-child {
+  text-align: right;
+}
+.table-as-form td:nth-child(2) {
+  text-align: left;
+}

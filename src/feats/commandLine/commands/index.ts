@@ -1,1 +1,5 @@
-export * from './searchProducts'
+export * from './product'
+export * from './customer'
+export * from './user'
+export * from './simpleCommands'
+export * from './documents'

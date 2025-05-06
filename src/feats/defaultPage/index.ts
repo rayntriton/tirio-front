@@ -1,3 +1,2 @@
-import { Default } from "./Default"
-
-export { Default }
+export * from "./DefaultPage"
+export * from "./SidePanel"
