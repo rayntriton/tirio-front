@@ -28,4 +28,5 @@ notebook
 .ipynb_checkpoints
 public
 
+.gitignore
 .eslintrc.js
